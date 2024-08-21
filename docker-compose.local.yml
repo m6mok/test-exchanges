@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    env_file:
+      - ./env/local/postgres.env
+    ports:
+      - "${DATABASE_PORT}:3306"
+    command: -p 3306
+    volumes:
+      - db:/var/lib/postgresql/data/
+    extra_hosts:
+      - db:172.18.0.2
+
+  bot:
+    build: .
+    command: python main.py
+    volumes:
+      - app:/app
+    depends_on:
+      - db
+    env_file:
+      - ./env/local/ports.env
+      - ./env/local/postgres.env
+      - ./env/local/database.env
+      - ./env/local/project.env
+
+volumes:
+  db:
+  app:

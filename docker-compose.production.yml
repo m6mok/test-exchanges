@@ -1,0 +1,15 @@
+services:
+  bot:
+    build: .
+    command: python main.py
+    volumes:
+      - app:/app
+    env_file:
+      - ./env/production/.env
+
+volumes:
+  db:
+  app:
+
+networks:
+  backend:
